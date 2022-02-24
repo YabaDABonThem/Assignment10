@@ -4,8 +4,10 @@
 // 2/22/2022
 // HuffmanTree class for Huffman Coding Assignment (Assignment 10)
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
@@ -37,8 +39,24 @@ public class HuffmanTree {
         return priorityQueue.poll();
     }
 
-    public StringBuilder compress(InputStream inputFile) { // inputFile is a text file
+    public void traverseTree(Map<Character, String> treeNodes, HuffmanNode root, String prefix) {
+        // go left until a leaf node
+        if (root == null) {
+            return;
+        } else if (root.isLeaf()) {
+            treeNodes.put(root.character, prefix);
+        }
+        traverseTree(treeNodes, root.left, prefix+"0");
+        traverseTree(treeNodes, root.right, prefix+"1");
+    }
 
+    public StringBuilder compress(InputStream inputFile) throws IOException { // inputFile is a text file
+        StringBuilder fileText = new StringBuilder();
+        Map<Character, String> treeNodes = new HashMap<>();
+        // traverseTree(treeNodes, priorityQueueToTree(sortItems(HuffmanNode.getCounts(inputFile))));
+        while(inputFile.available() > 0) {
+            fileText.append();
+        }
         return null;
     }
 
