@@ -10,8 +10,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 public class HuffmanTree {
-    public HuffmanTree(Map<Character, Integer> counts) { // Constructor
 
+    public HuffmanTree(Map<Character, Integer> counts) { // Constructor
+        priorityQueueToTree((sortItems(counts)));
     }
 
     public PriorityQueue<HuffmanNode> sortItems(Map<Character, Integer> characterCountMap) {
@@ -24,17 +25,20 @@ public class HuffmanTree {
         return priorityQueue;
     }
 
-    public HuffmanTree priorityQueueToTree(PriorityQueue<HuffmanNode> priorityQueue) {
-        for (HuffmanNode i : priorityQueue) {
 
+    public HuffmanNode priorityQueueToTree(PriorityQueue<HuffmanNode> priorityQueue) {
+        if (priorityQueue.isEmpty()) {
+            throw new IllegalArgumentException();
         }
-    }
-
-    public boolean isLeaf() {
-        return false;
+        while (priorityQueue.size() > 1) {
+            priorityQueue.add(new HuffmanNode(priorityQueue.poll(), priorityQueue.poll()));
+        }
+        // Return root node
+        return priorityQueue.poll();
     }
 
     public StringBuilder compress(InputStream inputFile) { // inputFile is a text file
+
         return null;
     }
 
