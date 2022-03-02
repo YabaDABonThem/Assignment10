@@ -57,7 +57,7 @@ public class HuffmanTree {
         // create map to store the leaf nodes from traversing the tree
         Map<Character, String> encodingMap = new HashMap<>();
 
-
+        // unfortunately we can't mark and reset the inputFile, or else that'd be a lot quicker.
         StringBuilder originalText = new StringBuilder();
         while (inputFile.available() > 0) {
             originalText.append((char)inputFile.read());
@@ -70,7 +70,7 @@ public class HuffmanTree {
 
         FileInputStream inputFile2 = new FileInputStream("output.txt");
         FileInputStream inputFile3 = new FileInputStream("output.txt");
-        FileInputStream inputFile4 = new FileInputStream("output.txt");
+        FileInputStream inputFile4 = new FileInputStream("output.txt"); // THIS ONE FOR TESTING
         //inputFile2.mark(inputFile2.available());
         // get the map of encoded map, where every character is mapped to their new binary representation
         buildMap(encodingMap, priorityQueueToTree(sortItems(HuffmanNode.getCounts(inputFile2))), "");
