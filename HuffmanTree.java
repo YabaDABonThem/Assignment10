@@ -16,7 +16,6 @@ import java.util.PriorityQueue;
 public class HuffmanTree {
     // private field
     private HuffmanNode huffmanTree;
-    private Map<Character, String> encodingMap = new HashMap<>();
 
     public HuffmanTree(Map<Character, Integer> counts) { // Constructor
         priorityQueueToTree((sortItems(counts)));
@@ -65,12 +64,13 @@ public class HuffmanTree {
         while (inputFile.available() > 0) {
             originalText.append((char)inputFile.read());
         }
-        System.out.println(originalText);
+        //System.out.println(originalText);
         FileOutputStream outputStream = new FileOutputStream("output.txt");
         byte[] bytes = originalText.toString().getBytes();
         outputStream.write(bytes);
         outputStream.close();
 
+        Map<Character, String> encodingMap = new HashMap<>();
         FileInputStream inputFile2 = new FileInputStream("output.txt");
         FileInputStream inputFile3 = new FileInputStream("output.txt");
         FileInputStream inputFile4 = new FileInputStream("output.txt"); // THIS ONE FOR TESTING
@@ -81,26 +81,35 @@ public class HuffmanTree {
         //inputFile2.reset();
         // loop through all characters in the text and add their new binary representation
         // to the StringBuilder we created earlier
-        System.out.println(HuffmanNode.getCounts(inputFile4));
+        //System.out.println(HuffmanNode.getCounts(inputFile4));
 
         while(inputFile3.available() > 0) {
             fileText.append(encodingMap.get((char) inputFile3.read()));
         }
         // return the encoded text
-        System.out.println(encodingMap);
+        //System.out.println(encodingMap);
         return fileText;
     }
 
     public StringBuilder decompress(StringBuilder inputString) {
         StringBuilder fileText = new StringBuilder();
         StringBuilder characterText = new StringBuilder();
-        while (inputString.length() > 0) {
-            if (huffmanTree.isLeaf()) {
-                fileText.append(encodingMap.get());
-            }
+        HuffmanNode currentNode = huffmanTree;
+        for(int i = 0; i < inputString.length(); ++i) {
             // if 1, go right; if 0, go left
+            if (inputString.charAt(i) == '0') {
+                currentNode = currentNode.left;
+            } else {
+                currentNode = currentNode.right;
+            }
+            if (currentNode.isLeaf()) {
+                fileText.append(currentNode.character);
+                System.out.println(fileText);
+                currentNode = huffmanTree;
+            }
+
         }
-        return null;
+        return fileText;
     }
 
     public String printSideways() {
