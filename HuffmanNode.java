@@ -6,6 +6,7 @@
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,17 +15,21 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
     public char character;
     public HuffmanNode left;
     public HuffmanNode right;
+    public boolean ifLeaf;
 
+    // this constructor is made to create all the leaf nodes, all of which store the frequency of a certain character.
     public HuffmanNode(char character, int frequency) {
         this.frequency = frequency;
         this.character = character;
+        ifLeaf = true;
     }
 
+    // this constructor is made for the artificial tree nodes that make up the HuffmanTree
     public HuffmanNode(HuffmanNode left, HuffmanNode right) {
         this.frequency = left.frequency + right.frequency;
         this.left = left;
         this.right = right;
-        // not having a character would probably mean that this isn't a leaf node.
+        ifLeaf = false;
     }
 
     public static Map<Character, Integer> getCounts(FileInputStream input) throws IOException {
@@ -43,7 +48,7 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
     }
 
     public boolean isLeaf() {
-        return false;
+        return ifLeaf;
     }
 
     // Code so program doesn't break (need to implement compareTo method)

@@ -4,6 +4,7 @@
 // 2/22/2022
 // HuffmanTree class for Huffman Coding Assignment (Assignment 10)
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -23,7 +24,6 @@ public class HuffmanTree {
         for (Character key : characters) {
             priorityQueue.add(new HuffmanNode(key, characterCountMap.get(key)));
         }
-        System.out.println(priorityQueue);
         return priorityQueue;
     }
 
@@ -39,25 +39,43 @@ public class HuffmanTree {
         return priorityQueue.poll();
     }
 
-    public void traverseTree(Map<Character, String> treeNodes, HuffmanNode root, String prefix) {
-        // go left until a leaf node
+    public void buildMap(Map<Character, String> encodingMap, HuffmanNode root, String prefix) {
         if (root == null) {
             return;
         } else if (root.isLeaf()) {
-            treeNodes.put(root.character, prefix);
+            encodingMap.put(root.character, prefix);
+            // don't need to return here, since the left and right nodes of a leaf node are null
         }
-        traverseTree(treeNodes, root.left, prefix+"0");
-        traverseTree(treeNodes, root.right, prefix+"1");
+        buildMap(encodingMap, root.left, prefix+"0");
+        buildMap(encodingMap, root.right, prefix+"1");
     }
 
     public StringBuilder compress(InputStream inputFile) throws IOException { // inputFile is a text file
+        // create StringBuilder to hold the compressed text
         StringBuilder fileText = new StringBuilder();
-        Map<Character, String> treeNodes = new HashMap<>();
-        // traverseTree(treeNodes, priorityQueueToTree(sortItems(HuffmanNode.getCounts(inputFile))));
-        while(inputFile.available() > 0) {
-            fileText.append();
+        // create map to store the leaf nodes from traversing the tree
+        Map<Character, String> encodingMap = new HashMap<>();
+
+        StringBuilder originalText = new StringBuilder();
+        while (inputFile.available() > 0) {
+            originalText.append(inputFile.read());
         }
-        return null;
+        
+        FileInputStream inputFile2 = new FileInputStream(inputFile.toString());
+        inputFile2.mark(inputFile2.available());
+        // get the map of encoded map, where every character is mapped to their new binary representation
+        buildMap(encodingMap, priorityQueueToTree(sortItems(HuffmanNode.getCounts(inputFile2))), "");
+        inputFile2.reset();
+        // loop through all characters in the text and add their new binary representation
+        // to the StringBuilder we created earlier
+
+        while(inputFile.available() > 0) {
+            System.out.println("test");
+            fileText.append(encodingMap.get((char) inputFile.read()));
+        }
+        // return the encoded text
+        System.out.println(encodingMap);
+        return fileText;
     }
 
     public StringBuilder decompress(StringBuilder inputString) {
