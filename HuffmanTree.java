@@ -5,6 +5,7 @@
 // HuffmanTree class for Huffman Coding Assignment (Assignment 10)
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -56,22 +57,30 @@ public class HuffmanTree {
         // create map to store the leaf nodes from traversing the tree
         Map<Character, String> encodingMap = new HashMap<>();
 
+
         StringBuilder originalText = new StringBuilder();
         while (inputFile.available() > 0) {
-            originalText.append(inputFile.read());
+            originalText.append((char)inputFile.read());
         }
-        
-        FileInputStream inputFile2 = new FileInputStream(inputFile.toString());
-        inputFile2.mark(inputFile2.available());
+        System.out.println(originalText);
+        FileOutputStream outputStream = new FileOutputStream("output.txt");
+        byte[] bytes = originalText.toString().getBytes();
+        outputStream.write(bytes);
+        outputStream.close();
+
+        FileInputStream inputFile2 = new FileInputStream("output.txt");
+        FileInputStream inputFile3 = new FileInputStream("output.txt");
+        FileInputStream inputFile4 = new FileInputStream("output.txt");
+        //inputFile2.mark(inputFile2.available());
         // get the map of encoded map, where every character is mapped to their new binary representation
         buildMap(encodingMap, priorityQueueToTree(sortItems(HuffmanNode.getCounts(inputFile2))), "");
-        inputFile2.reset();
+        //inputFile2.reset();
         // loop through all characters in the text and add their new binary representation
         // to the StringBuilder we created earlier
+        System.out.println(HuffmanNode.getCounts(inputFile4));
 
-        while(inputFile.available() > 0) {
-            System.out.println("test");
-            fileText.append(encodingMap.get((char) inputFile.read()));
+        while(inputFile3.available() > 0) {
+            fileText.append(encodingMap.get((char) inputFile3.read()));
         }
         // return the encoded text
         System.out.println(encodingMap);

@@ -33,6 +33,7 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
     }
 
     public static Map<Character, Integer> getCounts(FileInputStream input) throws IOException {
+        //input.mark(input.available());
         Map<Character, Integer> characterCountMap = new HashMap<Character, Integer>();
         while(input.available() > 0) {
             Character characterRead = (char) input.read();
@@ -44,6 +45,7 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
             }
         }
         // System.out.println(characterCountMap);
+        //input.reset();
         return characterCountMap;
     }
 
