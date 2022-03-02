@@ -59,12 +59,12 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
     // Method to "sort" items in the PriorityQueue
     // We sort the items in reverse order in order to build the tree from the leaf nodes up to the root node.
     public int compareTo(HuffmanNode o) {
-        if (frequency < o.frequency) {
+        if (frequency > o.frequency) {
             return 1;
         } else if (frequency == o.frequency) {
-            return -0;
+            return 0;
         }
-        return 1;
+        return -1;
     }
 
 }
