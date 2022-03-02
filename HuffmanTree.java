@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 public class HuffmanTree {
+    // private field
+    private HuffmanNode huffmanTree;
+    private Map<Character, String> encodingMap = new HashMap<>();
 
     public HuffmanTree(Map<Character, Integer> counts) { // Constructor
         priorityQueueToTree((sortItems(counts)));
@@ -29,7 +32,7 @@ public class HuffmanTree {
     }
 
 
-    public HuffmanNode priorityQueueToTree(PriorityQueue<HuffmanNode> priorityQueue) {
+    public void priorityQueueToTree(PriorityQueue<HuffmanNode> priorityQueue) {
         if (priorityQueue.isEmpty()) {
             throw new IllegalArgumentException();
         }
@@ -37,7 +40,7 @@ public class HuffmanTree {
             priorityQueue.add(new HuffmanNode(priorityQueue.poll(), priorityQueue.poll()));
         }
         // Return root node
-        return priorityQueue.poll();
+        huffmanTree = priorityQueue.poll();
     }
 
     public void buildMap(Map<Character, String> encodingMap, HuffmanNode root, String prefix) {
@@ -55,7 +58,7 @@ public class HuffmanTree {
         // create StringBuilder to hold the compressed text
         StringBuilder fileText = new StringBuilder();
         // create map to store the leaf nodes from traversing the tree
-        Map<Character, String> encodingMap = new HashMap<>();
+
 
         // unfortunately we can't mark and reset the inputFile, or else that'd be a lot quicker.
         StringBuilder originalText = new StringBuilder();
@@ -73,7 +76,8 @@ public class HuffmanTree {
         FileInputStream inputFile4 = new FileInputStream("output.txt"); // THIS ONE FOR TESTING
         //inputFile2.mark(inputFile2.available());
         // get the map of encoded map, where every character is mapped to their new binary representation
-        buildMap(encodingMap, priorityQueueToTree(sortItems(HuffmanNode.getCounts(inputFile2))), "");
+        priorityQueueToTree(sortItems(HuffmanNode.getCounts(inputFile2)));
+        buildMap(encodingMap, huffmanTree,"");
         //inputFile2.reset();
         // loop through all characters in the text and add their new binary representation
         // to the StringBuilder we created earlier
@@ -88,6 +92,14 @@ public class HuffmanTree {
     }
 
     public StringBuilder decompress(StringBuilder inputString) {
+        StringBuilder fileText = new StringBuilder();
+        StringBuilder characterText = new StringBuilder();
+        while (inputString.length() > 0) {
+            if (huffmanTree.isLeaf()) {
+                fileText.append(encodingMap.get());
+            }
+            // if 1, go right; if 0, go left
+        }
         return null;
     }
 
