@@ -4,6 +4,7 @@
 // 2/22/2022
 // HuffmanTree class for Huffman Coding Assignment (Assignment 10)
 
+// import libraries
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -77,7 +78,6 @@ public class HuffmanTree {
 
     public StringBuilder decompress(StringBuilder inputString) {
         StringBuilder fileText = new StringBuilder();
-        StringBuilder characterText = new StringBuilder();
         HuffmanNode currentNode = huffmanTree;
         for(int i = 0; i < inputString.length(); ++i) {
             // if 1, go right; if 0, go left
@@ -97,6 +97,7 @@ public class HuffmanTree {
         return fileText;
     }
 
+    // We weren't shown how to implement this method yet for some reason
     public String printSideways() {
         return null;
     }
