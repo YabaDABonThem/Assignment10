@@ -99,6 +99,7 @@ public class HuffmanTree {
             } else {
                 currentNode = currentNode.right;
             }
+            // If we're currently at a leaf node, we add the corresponding character to the fileText.
             if (currentNode.isLeaf()) {
                 fileText.append(currentNode.character);
 
@@ -107,7 +108,8 @@ public class HuffmanTree {
             }
 
         }
-        System.out.println(fileText);
+
+        // Return the fileText
         return fileText;
     }
 
