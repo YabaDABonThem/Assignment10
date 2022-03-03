@@ -1,10 +1,13 @@
-// Allen Bao
-// CS 211
-// Instructor: Craig Niiyama
-// 2/22/2022
-// HuffmanTree class for Huffman Coding Assignment (Assignment 10)
+/*
+ * HuffmanTree class for Huffman Coding Assignment (Assignment 10)
+ *
+ * @author  Allen Bao
+ * @class   CS 211
+ * @version 1.0
+ * @since   2022-02-22
+ */
 
-// import libraries
+// Import libraries
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -13,7 +16,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 public class HuffmanTree {
-    // private fields
+    // Private fields
     private HuffmanNode huffmanTree;
     private Map<Character, Integer> counts;
 
@@ -33,7 +36,9 @@ public class HuffmanTree {
         return priorityQueue;
     }
 
-    // this method
+    // This method creates the tree by creating a bunch of HuffmanNodes that
+    // just have a left and right node, and you'd keep repeating the process
+    // until you just have the root node remaining. n
     public void priorityQueueToTree(PriorityQueue<HuffmanNode> priorityQueue) {
         if (priorityQueue.isEmpty()) {
             throw new IllegalArgumentException();
@@ -41,46 +46,54 @@ public class HuffmanTree {
         while (priorityQueue.size() > 1) {
             priorityQueue.add(new HuffmanNode(priorityQueue.poll(), priorityQueue.poll()));
         }
-        // save root node in private field
+        // Save root node in private field
         huffmanTree = priorityQueue.poll();
     }
 
+    // This method traverses the tree and adds ever character and its binary representation to a map.
     public void buildMap(Map<Character, String> encodingMap, HuffmanNode root, String prefix) {
+        // Base case
         if (root == null) {
             return;
         } else if (root.isLeaf()) {
             encodingMap.put(root.character, prefix);
-            // don't need to return here, since the left and right nodes of a leaf node are null
+            // Don't need to return here, since the left and right nodes of a leaf node are null
         }
+        // Recursively call its left and right nodes until you reach a leaf node.
         buildMap(encodingMap, root.left, prefix+"0");
         buildMap(encodingMap, root.right, prefix+"1");
     }
 
+    // This method takes in an InputStream and returns a StringBuilder with the compressed text.
     public StringBuilder compress(InputStream inputFile) throws IOException { // inputFile is a text file
-        // create StringBuilder to hold the compressed text
+        // Create StringBuilder to hold the compressed text
         StringBuilder compressedText = new StringBuilder();
-        // create map to store the leaf nodes from traversing the tree
+        // Create map to store the leaf nodes from traversing the tree
         Map<Character, String> encodingMap = new HashMap<>();
-        // get the map of encoded map, where every character is mapped to their new binary representation
+
+        // Get the map of encoded map, where every character is mapped to their new binary representation
         priorityQueueToTree(sortItems(counts));
         buildMap(encodingMap, huffmanTree,"");
-        // loop through all characters in the text and add their new binary representation
-        // to the StringBuilder we created earlier
-        //System.out.println(HuffmanNode.getCounts(inputFile4));
 
+        // Loop through all characters in the text and add their new binary representation
+        // to the StringBuilder we created earlier
         while(inputFile.available() > 0) {
             compressedText.append(encodingMap.get((char) inputFile.read()));
         }
-        // return the encoded text
-        //System.out.println(encodingMap);
+        // Return the encoded text
         return compressedText;
     }
 
+    // This method takes in the compressed text and returns a StringBuilder containing the decompressed text
     public StringBuilder decompress(StringBuilder inputString) {
+        // Create StringBuilder to hold the decompressed text
         StringBuilder fileText = new StringBuilder();
+        // Create a "tree pointer" to represent where we currently are in the tree
         HuffmanNode currentNode = huffmanTree;
+
+        // Go through all the available text
         for(int i = 0; i < inputString.length(); ++i) {
-            // if 1, go right; if 0, go left
+            // If the character at index i is 1, go right; if 0, go left
             if (inputString.charAt(i) == '0') {
                 currentNode = currentNode.left;
             } else {
@@ -89,6 +102,7 @@ public class HuffmanTree {
             if (currentNode.isLeaf()) {
                 fileText.append(currentNode.character);
 
+                // Reset the tree pointer back to the root node.
                 currentNode = huffmanTree;
             }
 

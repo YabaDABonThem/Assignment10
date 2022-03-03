@@ -1,8 +1,11 @@
-// Allen Bao
-// CS 211
-// Instructor: Craig Niiyama
-// 2/22/2022
-// HuffmanNode class for Huffman Coding Assignment (Assignment 10)
+/*
+ * HuffmanNode class for Huffman Coding Assignment (Assignment 10)
+ *
+ * @author  Allen Bao
+ * @class   CS 211
+ * @version 1.0
+ * @since   2022-02-22
+ */
 
 // Import libraries
 import java.io.FileInputStream;
@@ -43,21 +46,23 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
             // We need to cast the read data to a char because the read() method returns an int
             Character characterRead = (char) input.read();
 
-            // if the character is already in the map, update the count by 1
+            // If the character is already in the map, update the count by 1
             if (characterCountMap.containsKey(characterRead)) {
                 characterCountMap.replace(characterRead, characterCountMap.get(characterRead)+1);
             } else { // if a character isn't in the map yet, add it to the map with a counter of 1
                 characterCountMap.put(characterRead, 1);
             }
         }
+
         // Put EOF (end of file) character
         characterCountMap.put((char)256, 1);
         System.out.println(characterCountMap);
-        // return the map
+
+        // Return the map
         return characterCountMap;
     }
 
-    // return if the node is a leaf node or not
+    // Return if the node is a leaf node or not
     public boolean isLeaf() {
         return ifLeaf;
     }
