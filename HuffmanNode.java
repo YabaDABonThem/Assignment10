@@ -46,7 +46,7 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
         }
         // EOF
         characterCountMap.put((char)256, 1);
-        // System.out.println(characterCountMap);
+        System.out.println(characterCountMap);
         //input.reset();
         return characterCountMap;
     }
