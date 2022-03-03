@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HuffmanNode implements Comparable<HuffmanNode> {
+    // public fields
     public int frequency;
     public char character;
     public HuffmanNode left;
@@ -31,8 +32,9 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
         ifLeaf = false;
     }
 
+    // this method returns a map that counts the number of appearances for each character
     public static Map<Character, Integer> getCounts(FileInputStream input) throws IOException {
-        //input.mark(input.available());
+
         Map<Character, Integer> characterCountMap = new HashMap<Character, Integer>();
         while(input.available() > 0) {
             Character characterRead = (char) input.read();
@@ -43,10 +45,9 @@ public class HuffmanNode implements Comparable<HuffmanNode> {
                 characterCountMap.put(characterRead, 1);
             }
         }
-        // EOF
+        // put EOF (end of file) character
         characterCountMap.put((char)256, 1);
         System.out.println(characterCountMap);
-        //input.reset();
         return characterCountMap;
     }
 
